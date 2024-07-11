@@ -3,6 +3,7 @@ package com.example.algamoney.api.model;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.NotFound;
 
 @Entity
@@ -13,7 +14,8 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
-    @NotNull //alteração nova @NotNull
+    @NotNull
+    @Size (min = 3, max = 20)//alteração nova @NotNull
     private String nome;
 
     public Long getCodigo() {

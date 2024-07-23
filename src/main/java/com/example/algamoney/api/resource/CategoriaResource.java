@@ -16,7 +16,7 @@ import reactor.netty.http.server.HttpServerResponse;
 
 import java.net.URI;
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

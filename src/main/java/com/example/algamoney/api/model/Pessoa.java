@@ -1,5 +1,6 @@
 package com.example.algamoney.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,8 +20,6 @@ public class Pessoa {
 
     @NotNull
     private Boolean ativo;
-
-    // Getters and Setters
 
     public Long getCodigo() {
         return codigo;
@@ -52,5 +51,11 @@ public class Pessoa {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    @JsonIgnore
+    @Transient
+    public boolean isInativo() {
+        return !this.ativo;
     }
 }

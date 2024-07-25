@@ -1,21 +1,21 @@
 package com.example.algamoney.api.token;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-
 import org.apache.catalina.util.ParameterMap;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -26,7 +26,7 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if ("/oauth/token".equalsIgnoreCase(req.getRequestURI())
+        if ("/oauth2/token".equalsIgnoreCase(req.getRequestURI())
                 && "refresh_token".equals(req.getParameter("grant_type"))
                 && req.getCookies() != null) {
 
@@ -34,7 +34,7 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
                     Stream.of(req.getCookies())
                             .filter(cookie -> "refreshToken".equals(cookie.getName()))
                             .findFirst()
-                            .map(cookie -> cookie.getValue())
+                            .map(Cookie::getValue)
                             .orElse(null);
 
             req = new MyServletRequestWrapper(req, refreshToken);
@@ -45,7 +45,7 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
 
     static class MyServletRequestWrapper extends HttpServletRequestWrapper {
 
-        private String refreshToken;
+        private final String refreshToken;
 
         public MyServletRequestWrapper(HttpServletRequest request, String refreshToken) {
             super(request);
@@ -55,7 +55,7 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
         @Override
         public Map<String, String[]> getParameterMap() {
             ParameterMap<String, String[]> map = new ParameterMap<>(getRequest().getParameterMap());
-            map.put("refresh_token", new String[] { refreshToken });
+            map.put("refresh_token", new String[]{refreshToken});
             map.setLocked(true);
             return map;
         }

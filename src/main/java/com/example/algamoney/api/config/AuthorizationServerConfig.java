@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -32,12 +33,12 @@ public class AuthorizationServerConfig {
                 .clientSecret(passwordEncoder.encode("@ngul@r0"))
                 .scope("read")
                 .scope("write")
+                .scope("offline_access")  // Inclua este escopo
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenSettings(TokenSettings.builder()
                         .accessTokenTimeToLive(Duration.ofMinutes(20))
-                        .refreshTokenTimeToLive(Duration.ofDays(1))
-                        .reuseRefreshTokens(false)
+                        .refreshTokenTimeToLive(Duration.ofDays(30))  // Ajuste o tempo de vida do refresh token conforme necessário
                         .build())
                 .build();
 
@@ -52,7 +53,6 @@ public class AuthorizationServerConfig {
 
     @Bean
     public OAuth2AuthorizationService authorizationService() {
-        // Implement your authorization service here if needed
-        return null;
+        return new InMemoryOAuth2AuthorizationService();
     }
 }

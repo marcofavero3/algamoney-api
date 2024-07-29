@@ -33,7 +33,7 @@ public class AuthorizationServerConfig {
                 .clientSecret(passwordEncoder.encode("@ngul@r0"))
                 .scope("read")
                 .scope("write")
-                .scope("offline_access")  // Inclua este escopo
+                .scope("offline_access")  // testar
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenSettings(TokenSettings.builder()

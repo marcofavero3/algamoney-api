@@ -29,12 +29,11 @@ public class AuthorizationServerConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient angularClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("angular")
-                .clientSecret(passwordEncoder.encode("@ngul@r0"))
+                .clientId("oauth2-client-api")
+                .clientSecret(passwordEncoder.encode("*Y*%bXQ#<5,p~[Vk9bb&&X9rsw7V~J`_"))
                 .scope("read")
                 .scope("write")
-                .scope("offline_access")
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenSettings(TokenSettings.builder()
                         .accessTokenTimeToLive(Duration.ofMinutes(30))
@@ -45,6 +44,7 @@ public class AuthorizationServerConfig {
 
         return new InMemoryRegisteredClientRepository(angularClient);
     }
+
 
     @Bean
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {

@@ -27,7 +27,34 @@ public class LancamentoService {
         return lancamentoRepository.save(lancamento);
     }
 
+    public Lancamento atualizar(Long codigo, Lancamento lancamento) {
+        Lancamento lancamentoSalvo = buscarLancamentoExistente(codigo);
+        validarPessoa(lancamento);
+
+        lancamentoSalvo.setDescricao(lancamento.getDescricao());
+        lancamentoSalvo.setDataVencimento(lancamento.getDataVencimento());
+        lancamentoSalvo.setDataPagamento(lancamento.getDataPagamento());
+        lancamentoSalvo.setValor(lancamento.getValor());
+        lancamentoSalvo.setTipo(lancamento.getTipo());
+        lancamentoSalvo.setCategoria(lancamento.getCategoria());
+        lancamentoSalvo.setPessoa(lancamento.getPessoa());
+
+        return lancamentoRepository.save(lancamentoSalvo);
+    }
+
     public void remover(Long codigo) {
         lancamentoRepository.deleteById(codigo);
+    }
+
+    private void validarPessoa(Lancamento lancamento) {
+        Optional<Pessoa> pessoa = pessoaRepository.findById(lancamento.getPessoa().getCodigo());
+        if (pessoa.isEmpty() || pessoa.get().isInativo()) {
+            throw new PessoaInexistenteOuInativaException();
+        }
+    }
+
+    private Lancamento buscarLancamentoExistente(Long codigo) {
+        return lancamentoRepository.findById(codigo)
+                .orElseThrow(() -> new IllegalArgumentException("Lançamento não encontrado"));
     }
 }

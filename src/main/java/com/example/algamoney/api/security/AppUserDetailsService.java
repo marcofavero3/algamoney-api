@@ -35,5 +35,4 @@ public class AppUserDetailsService implements UserDetailsService {
         usuario.getPermissoes().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getDescricao().toUpperCase())));
         return authorities;
     }
-
 }

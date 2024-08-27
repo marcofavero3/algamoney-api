@@ -1,9 +1,5 @@
 package com.example.algamoney.api.resource;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler;
 import com.example.algamoney.api.model.Lancamento;
@@ -23,9 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -59,7 +57,8 @@ public class LancamentoResource {
     @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and hasAuthority('SCOPE_read')")
     public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {
         Optional<Lancamento> lancamento = lancamentoRepository.findById(codigo);
-        return lancamento.isPresent() ? ResponseEntity.ok(lancamento.get()) : ResponseEntity.notFound().build();
+        return lancamento.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -88,5 +87,4 @@ public class LancamentoResource {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

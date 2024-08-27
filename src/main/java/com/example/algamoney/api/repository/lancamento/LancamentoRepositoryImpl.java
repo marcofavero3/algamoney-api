@@ -29,7 +29,6 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
         CriteriaQuery<Lancamento> criteria = builder.createQuery(Lancamento.class);
         Root<Lancamento> root = criteria.from(Lancamento.class);
 
-        // criar restrições
         Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
         criteria.where(predicates);
 
@@ -77,7 +76,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 
         if (lancamentoFilter.getGetDataVencimentoAte() != null) {
             predicates.add(
-                    builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getDataVencimentoDe())
+                    builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getGetDataVencimentoAte())
             );
         }
 

@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @Profile("basic-security")
 @EnableWebSecurity
@@ -31,8 +33,7 @@ public class BasicSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated() // Todas as requisições requerem autenticação
                 )
-                .httpBasic()
-                .and()
+                .httpBasic(withDefaults()) // Atualiza para usar 'withDefaults()' no lugar de 'httpBasic()' e 'and()'
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

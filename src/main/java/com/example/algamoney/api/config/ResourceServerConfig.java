@@ -58,7 +58,7 @@ public class ResourceServerConfig {
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
-    
+
     private JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {

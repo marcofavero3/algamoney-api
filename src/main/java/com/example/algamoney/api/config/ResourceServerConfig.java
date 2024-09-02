@@ -28,7 +28,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @Profile("oauth-security")
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true) // Substitui EnableGlobalMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig {
 
     @Bean
@@ -36,8 +36,8 @@ public class ResourceServerConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/categorias").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/categorias").permitAll()  // Exemplo de rota pública
+                                .anyRequest().authenticated()                // Qualquer outra rota deve ser autenticada
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -29,7 +29,7 @@ public class BasicSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated()
+                        authorizeRequests.anyRequest().authenticated() // Todas as requisições requerem autenticação
                 )
                 .httpBasic()
                 .and()
